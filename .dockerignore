@@ -1,0 +1,16 @@
+# 阿里云容器镜像服务（ACR）部署时忽略的文件
+node_modules
+dist
+dist-ssr
+.git
+.github
+.vscode
+.idea
+*.log
+.env*
+.DS_Store
+Thumbs.db
+deploy/oss-deploy.sh
+deploy/oss-config.json
+deploy/README.md
+.workbuddy

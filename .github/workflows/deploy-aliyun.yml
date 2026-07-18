@@ -1,0 +1,91 @@
+#==============================================================
+# 超觅 Ultraseek 官网 — 自动部署到阿里云 OSS
+#--------------------------------------------------------------
+# 触发条件：push 到 main 分支
+# 流程：安装依赖 → 构建 → 用 ossutil 同步 dist 到 OSS
+#
+# 必须在 GitHub 仓库 Settings → Secrets and variables → Actions
+# 中添加以下 Secrets：
+#   ALIYUN_AK_ID      RAM 用户 AccessKey ID
+#   ALIYUN_AK_SECRET  AccessKey Secret
+#   OSS_BUCKET        Bucket 名称（如 ultraseek-website）
+#   OSS_ENDPOINT      外网 Endpoint（如 oss-cn-hangzhou.aliyuncs.com）
+#==============================================================
+name: Deploy to Aliyun OSS
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # 支持手动触发
+
+# 同一时间只允许一个部署
+concurrency:
+  group: deploy-oss
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. 拉取代码
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. 安装 Node
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # 3. 安装依赖
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      # 4. 构建
+      - name: Build
+        run: npm run build
+
+      # 5. 安装 ossutil
+      - name: Install ossutil
+        run: |
+          curl -L -o /usr/local/bin/ossutil https://gosspublic.alicdn.com/ossutil/v2/ossutil-linux-amd64
+          chmod +x /usr/local/bin/ossutil
+          ossutil version
+
+      # 6. 配置鉴权
+      - name: Configure ossutil
+        run: |
+          ossutil config \
+            --access-key-id "${{ secrets.ALIYUN_AK_ID }}" \
+            --access-key-secret "${{ secrets.ALIYUN_AK_SECRET }}" \
+            --endpoint "${{ secrets.OSS_ENDPOINT }}"
+
+      # 7. 同步 dist 到 OSS（保持与本地一致，删除多余文件）
+      - name: Deploy to OSS
+        run: |
+          ossutil cp dist/ oss://${{ secrets.OSS_BUCKET }}/ \
+            --recursive \
+            --force \
+            --update \
+            --acl public-read \
+            -e ${{ secrets.OSS_ENDPOINT }} \
+            --exclude ".DS_Store" \
+            --exclude "Thumbs.db"
+
+      # 8. 更新静态网站托管配置
+      - name: Set website hosting
+        run: |
+          ossutil website oss://${{ secrets.OSS_BUCKET }}/ \
+            --index-document index.html \
+            --error-document index.html \
+            -e ${{ secrets.OSS_ENDPOINT }}
+
+      # 9. 部署完成通知
+      - name: Deployment info
+        run: |
+          echo "::notice::部署完成 ✅"
+          echo "访问地址：https://${{ secrets.OSS_BUCKET }}.${{ secrets.OSS_ENDPOINT }}/index.html"
