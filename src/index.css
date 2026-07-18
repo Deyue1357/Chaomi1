@@ -1,0 +1,227 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   Ultraseek 超觅 — Blue Tech Theme
+   蓝色科技感 · 参考大疆 / 追觅官网
+   ============================================================ */
+
+@layer base {
+  :root {
+    /* 基础 */
+    --background: 210 40% 99%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    /* 主品牌色 — 科技蓝 */
+    --primary: 211 100% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    /* 次级色 — 浅蓝 */
+    --secondary: 210 60% 96%;
+    --secondary-foreground: 211 100% 35%;
+
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+
+    /* 强调色 — 青色 */
+    --accent: 190 100% 50%;
+    --accent-foreground: 222 47% 11%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 211 100% 50%;
+
+    --radius: 0.75rem;
+
+    /* 科技感深色区 */
+    --navy-900: 222 56% 5%;
+    --navy-800: 222 47% 8%;
+    --navy-700: 222 40% 13%;
+    --navy-600: 221 35% 20%;
+  }
+
+  .dark {
+    --background: 222 47% 6%;
+    --foreground: 210 40% 98%;
+    --card: 222 47% 8%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 47% 8%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 211 100% 55%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 222 40% 13%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 222 40% 13%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 190 100% 50%;
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 222 35% 18%;
+    --input: 222 35% 18%;
+    --ring: 211 100% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Inter", "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
+  }
+  ::selection {
+    background-color: hsl(var(--primary) / 0.2);
+    color: hsl(var(--primary));
+  }
+}
+
+@layer components {
+  /* 蓝色科技渐变 */
+  .tech-gradient {
+    background: linear-gradient(135deg, #0084ff 0%, #00b8ff 50%, #00e0ff 100%);
+  }
+  .tech-gradient-text {
+    background: linear-gradient(135deg, #0084ff 0%, #00b8ff 50%, #00e0ff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+  /* 深色科技背景 */
+  .navy-bg {
+    background-color: hsl(var(--navy-900));
+  }
+  .navy-gradient {
+    background: linear-gradient(180deg, hsl(var(--navy-900)) 0%, hsl(var(--navy-800)) 100%);
+  }
+  .navy-radial {
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0, 132, 255, 0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 30%, rgba(0, 224, 255, 0.10) 0%, transparent 55%),
+      linear-gradient(180deg, hsl(var(--navy-900)) 0%, hsl(var(--navy-800)) 100%);
+  }
+  /* 网格背景 */
+  .grid-pattern {
+    background-image:
+      linear-gradient(rgba(0, 132, 255, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 132, 255, 0.06) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .grid-pattern-dark {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  /* 发光效果 */
+  .glow-blue {
+    box-shadow: 0 0 40px rgba(0, 132, 255, 0.35), 0 0 80px rgba(0, 132, 255, 0.15);
+  }
+  .glow-text {
+    text-shadow: 0 0 30px rgba(0, 132, 255, 0.5);
+  }
+  /* 玻璃拟态 */
+  .glass {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .glass-light {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+  }
+  /* 科技感卡片 */
+  .tech-card {
+    @apply relative rounded-2xl border border-border bg-card transition-all duration-300;
+  }
+  .tech-card-hover:hover {
+    @apply -translate-y-1 border-primary/40;
+    box-shadow: 0 20px 50px -12px rgba(0, 132, 255, 0.25);
+  }
+}
+
+@layer utilities {
+  .animate-fade-up {
+    animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .animate-fade-in {
+    animation: fadeIn 0.8s ease-out both;
+  }
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  .animate-float-slow {
+    animation: float 9s ease-in-out infinite;
+  }
+  .animate-glow-pulse {
+    animation: glowPulse 3s ease-in-out infinite;
+  }
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradientShift 6s ease infinite;
+  }
+  .animate-spin-slow {
+    animation: spin 18s linear infinite;
+  }
+  .delay-100 { animation-delay: 0.1s; }
+  .delay-200 { animation-delay: 0.2s; }
+  .delay-300 { animation-delay: 0.3s; }
+  .delay-400 { animation-delay: 0.4s; }
+  .delay-500 { animation-delay: 0.5s; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-16px); }
+}
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 30px rgba(0, 132, 255, 0.3); }
+  50% { box-shadow: 0 0 50px rgba(0, 132, 255, 0.55); }
+}
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #0084ff, #00e0ff);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #0066cc, #00b8ff);
+}
