@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Phone, Mail, MapPin, Clock, Send, CheckCircle2, MessageCircle, Globe } from 'lucide-react'
+import { Phone, Mail, MapPin, Clock, Send, CheckCircle2, MessageCircle, Globe, Navigation } from 'lucide-react'
 import { PageHero } from '@/components/layout/PageHero'
 import { Reveal } from '@/components/Reveal'
 import { Button } from '@/components/ui/button'
@@ -257,28 +257,37 @@ export function Contact() {
                   </div>
                 </div>
 
-                {/* 地图占位 */}
+                {/* 地图导航 */}
                 <div className="tech-card overflow-hidden">
-                  <div className="relative h-56 overflow-hidden bg-navy-900">
-                    <div className="absolute inset-0 grid-pattern-dark opacity-60" />
-                    <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                      <div className="relative">
-                        <div className="absolute inset-0 animate-glow-pulse rounded-full bg-blue-500/40 blur-xl" />
-                        <div className="relative flex h-14 w-14 items-center justify-center rounded-full tech-gradient shadow-tech-lg">
-                          <MapPin className="h-7 w-7 text-white" />
-                        </div>
-                      </div>
-                      <p className="mt-4 text-sm font-medium text-white">深圳市南山区科技园南区</p>
-                      <p className="mt-1 text-xs text-white/50">超觅科技大厦 8-12 层</p>
-                    </div>
+                  <div className="relative h-60 w-full overflow-hidden bg-navy-900">
+                    <iframe
+                      title="超觅科技地图位置"
+                      src="https://uri.amap.com/marker?position=119.8955701,31.7340636&name=%E8%B6%85%E8%A7%8EUltraseek&coordinate=wgs84&callnative=1&src=%E8%B6%85%E8%A7%85%E5%AE%98%E7%BD%91"
+                      className="h-full w-full border-0"
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      allowFullScreen
+                    />
                   </div>
                   <div className="border-t border-border p-4">
-                    <Button variant="outline" className="w-full" asChild>
-                      <a href="https://map.qq.com/" target="_blank" rel="noreferrer">
-                        <MapPin className="mr-2 h-4 w-4" />
-                        查看地图导航
-                      </a>
-                    </Button>
+                    <div className="mb-3 flex items-start gap-2">
+                      <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                      <p className="text-sm text-muted-foreground">江苏省常州市武进牛塘曹溪村新兴路35号</p>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
+                      <Button variant="outline" size="sm" asChild>
+                        <a href="https://uri.amap.com/navigation?to=119.8955701,31.7340636,%E8%B6%85%E8%A7%8EUltraseek&coordinate=wgs84&mode=car&callnative=1&src=%E8%B6%85%E8%A7%85%E5%AE%98%E7%BD%91" target="_blank" rel="noreferrer">
+                          <Navigation className="mr-1.5 h-3.5 w-3.5" />
+                          高德导航
+                        </a>
+                      </Button>
+                      <Button variant="outline" size="sm" asChild>
+                        <a href="https://apis.map.qq.com/uri/v1/routeplan?type=drive&to=%E8%B6%85%E8%A7%8EUltraseek&tocoord=31.7340636,119.8955701&referer=%E8%B6%85%E8%A7%85%E5%AE%98%E7%BD%91" target="_blank" rel="noreferrer">
+                          <Navigation className="mr-1.5 h-3.5 w-3.5" />
+                          腾讯导航
+                        </a>
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>
