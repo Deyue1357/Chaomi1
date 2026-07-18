@@ -220,7 +220,7 @@ export function Contact() {
                       </div>
                       <div>
                         <div className="text-sm font-semibold text-foreground">商务合作</div>
-                        <div className="text-xs text-muted-foreground">business@ultraseek.com</div>
+                        <div className="text-xs text-muted-foreground">3838991320@qq.com</div>
                       </div>
                     </a>
                   </div>
