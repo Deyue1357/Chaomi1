@@ -96,7 +96,7 @@ export function Footer() {
               </li>
               <li className="flex items-start gap-2.5 text-white/55">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-blue-400" />
-                <span>江苏省常州市武进牛塘曹溪村新兴路35号</span>
+                <span className="text-xs">江苏省常州市武进牛塘曹溪村新兴路35号</span>
               </li>
             </ul>
           </div>

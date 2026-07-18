@@ -25,7 +25,7 @@ const contactCards = [
   {
     icon: MapPin,
     title: '总部地址',
-    lines: ['江苏省常州市武进牛塘曹溪村', '新兴路35号'],
+    lines: ['江苏省常州市武进牛塘曹溪村新兴路35号'],
     gradient: 'from-sky-500 to-blue-400',
   },
   {
@@ -77,7 +77,7 @@ export function Contact() {
                   <h3 className="mt-5 text-lg font-bold text-foreground">{card.title}</h3>
                   <div className="mt-2 space-y-1">
                     {card.lines.map((line) => (
-                      <p key={line} className="text-sm text-muted-foreground">{line}</p>
+                      <p key={line} className="text-sm text-muted-foreground whitespace-nowrap">{line}</p>
                     ))}
                   </div>
                 </div>
