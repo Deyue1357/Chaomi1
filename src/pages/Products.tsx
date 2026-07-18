@@ -6,7 +6,7 @@ import { Reveal } from '@/components/Reveal'
 import { Icon } from '@/components/Icon'
 import { CTA } from '@/sections/home/CTA'
 import { Button } from '@/components/ui/button'
-import { productCategories, productDetails, brands, getBuyUrl, defaultBuyLinks } from '@/data/site'
+import { productCategories, productDetails, brands, getBuyUrl, defaultBuyLinks, brandLogos } from '@/data/site'
 import { useCart } from '@/context/CartContext'
 import { cn } from '@/lib/utils'
 
@@ -55,9 +55,15 @@ export function Products() {
           <Reveal key={`head-${activeId}`}>
             <div className="flex flex-col items-start gap-5 md:flex-row md:items-center md:justify-between">
               <div className="flex items-center gap-4">
-                <div className={cn('flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br shadow-tech', activeCategory.gradient)}>
-                  <Icon name={activeCategory.icon} className="h-7 w-7 text-white" />
-                </div>
+                {activeCategory.image ? (
+                  <div className="h-20 w-20 shrink-0 overflow-hidden rounded-2xl border border-border shadow-tech">
+                    <img src={activeCategory.image} alt={activeCategory.name} className="h-full w-full object-cover" />
+                  </div>
+                ) : (
+                  <div className={cn('flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br shadow-tech', activeCategory.gradient)}>
+                    <Icon name={activeCategory.icon} className="h-7 w-7 text-white" />
+                  </div>
+                )}
                 <div>
                   <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
                     {activeCategory.name}
@@ -196,14 +202,21 @@ export function Products() {
 
           <Reveal delay={300} className="mt-12">
             <div className="flex flex-wrap justify-center gap-3">
-              {brands.map((brand) => (
-                <span
-                  key={brand}
-                  className="rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-white/70 backdrop-blur transition-all hover:border-blue-400/40 hover:bg-blue-500/10 hover:text-white"
-                >
-                  {brand}
-                </span>
-              ))}
+              {brands.map((brand) => {
+                const logo = brandLogos[brand]
+                return (
+                  <span
+                    key={brand}
+                    className="flex items-center rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 backdrop-blur transition-all hover:border-blue-400/40 hover:bg-blue-500/10"
+                  >
+                    {logo ? (
+                      <img src={logo} alt={brand} loading="lazy" className="h-7 w-auto object-contain" />
+                    ) : (
+                      <span className="text-sm font-medium text-white/70">{brand}</span>
+                    )}
+                  </span>
+                )
+              })}
             </div>
           </Reveal>
         </div>

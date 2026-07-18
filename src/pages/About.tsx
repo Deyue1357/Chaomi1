@@ -3,7 +3,7 @@ import { Reveal } from '@/components/Reveal'
 import { Icon } from '@/components/Icon'
 import { CTA } from '@/sections/home/CTA'
 import { Stats } from '@/sections/home/Stats'
-import { milestones, culture, certifications } from '@/data/site'
+import { milestones, culture, certifications, factoryImages } from '@/data/site'
 import { Award, Building2, Users, Globe, Wrench } from 'lucide-react'
 
 export function About() {
@@ -54,6 +54,24 @@ export function About() {
               </div>
             </Reveal>
           </div>
+
+          {/* 厂区/车间实景图（配置 factoryImages 后自动展示） */}
+          {factoryImages.length > 0 && (
+            <div className="mt-14 grid grid-cols-2 gap-4 md:grid-cols-4">
+              {factoryImages.map((img, i) => (
+                <Reveal key={img} delay={i * 80}>
+                  <div className="aspect-[4/3] overflow-hidden rounded-xl border border-border shadow-tech">
+                    <img
+                      src={img}
+                      alt={`厂区实景 ${i + 1}`}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+                    />
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -142,12 +160,18 @@ export function About() {
 
           <div className="mt-14 grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-6">
             {certifications.map((cert, i) => (
-              <Reveal key={cert} delay={i * 70}>
+              <Reveal key={cert.name} delay={i * 70}>
                 <div className="tech-card tech-card-hover flex h-full flex-col items-center justify-center gap-3 p-6 text-center">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
-                    <Award className="h-6 w-6 text-primary" />
-                  </div>
-                  <span className="text-sm font-medium text-foreground">{cert}</span>
+                  {cert.image ? (
+                    <div className="aspect-[3/4] w-full max-w-[110px] overflow-hidden rounded-lg border border-border shadow-tech">
+                      <img src={cert.image} alt={cert.name} loading="lazy" className="h-full w-full object-cover" />
+                    </div>
+                  ) : (
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
+                      <Award className="h-6 w-6 text-primary" />
+                    </div>
+                  )}
+                  <span className="text-sm font-medium text-foreground">{cert.name}</span>
                 </div>
               </Reveal>
             ))}

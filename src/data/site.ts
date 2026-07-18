@@ -8,6 +8,7 @@ export interface ProductCategory {
   description: string
   features: string[]
   gradient: string
+  image?: string // 产品图，可选。配置后首页/产品页展示实拍图，未配置则回退到 icon 图标
 }
 
 // 产品分类
@@ -144,13 +145,17 @@ export const culture = [
 ]
 
 // 资质认证
-export const certifications = [
-  'ISO 9001 质量管理体系',
-  'ISO 14001 环境管理体系',
-  'CE 欧盟认证',
-  'RoHS 符合性认证',
-  'REACH 合规认证',
-  '高新技术企业',
+export interface Certification {
+  name: string
+  image?: string // 证书扫描件图，可选。配置后展示证书实图，未配置则回退到 Award 图标
+}
+export const certifications: Certification[] = [
+  { name: 'ISO 9001 质量管理体系' },
+  { name: 'ISO 14001 环境管理体系' },
+  { name: 'CE 欧盟认证' },
+  { name: 'RoHS 符合性认证' },
+  { name: 'REACH 合规认证' },
+  { name: '高新技术企业' },
 ]
 
 // 产品详细规格（按分类）
@@ -352,4 +357,29 @@ export function getBuyUrl(model: ProductModel, platform: 'douyin' | 'tmall'): st
   return platform === 'douyin'
     ? model.douyinUrl ?? defaultBuyLinks.douyin
     : model.tmallUrl ?? defaultBuyLinks.tmall
+}
+
+// ============ 素材配置（以下字段全部可选，配置后自动展示，未配置则回退到图标/文字） ============
+
+// 品牌适配 Logo 映射：品牌名 → Logo 图片路径
+// 配置后，产品页「适配品牌」墙优先显示 Logo 图；未配置的品牌仍显示文字
+export const brandLogos: Record<string, string> = {
+  // 示例（取消注释并替换为真实路径即可）：
+  // '追觅': '/images/brands/dreame.png',
+  // '科沃斯': '/images/brands/ecovacs.png',
+  // '石头': '/images/brands/roborock.png',
+}
+
+// 厂区/车间图片：配置后，关于我们页「公司简介」区展示图片网格
+export const factoryImages: string[] = [
+  // 示例：
+  // '/images/factory/workshop1.jpg',
+  // '/images/factory/production-line.jpg',
+  // '/images/factory/team.jpg',
+]
+
+// 站点 Logo 与 Favicon：配置后，导航栏与浏览器标签使用自定义图片，未配置则用内置 SVG Logo
+export const siteLogo = {
+  logo: '', // 站点 Logo 图片，如 '/images/logo/logo.svg'（建议透明背景，高度 36px）
+  favicon: '', // 浏览器标签图标，如 '/images/logo/favicon.png'（建议 32×32 或 180×180）
 }

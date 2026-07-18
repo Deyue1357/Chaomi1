@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils'
+import { siteLogo } from '@/data/site'
 
 interface LogoProps {
   className?: string
@@ -8,11 +9,31 @@ interface LogoProps {
 
 /**
  * 超觅 Ultraseek Logo
- * 由搜索/雷达意象演化而来 —— 圆环 + 定位核心，寓意"精准适配，超凡寻觅"
+ * 默认由搜索/雷达意象演化而来 —— 圆环 + 定位核心，寓意"精准适配，超凡寻觅"
+ * 配置 siteLogo.logo 后自动切换为自定义图片 Logo
  */
 export function Logo({ className, variant = 'dark', showText = true }: LogoProps) {
   const textColor = variant === 'light' ? 'text-white' : 'text-foreground'
   const subColor = variant === 'light' ? 'text-white/60' : 'text-muted-foreground'
+
+  // 自定义图片 Logo 优先
+  if (siteLogo.logo) {
+    return (
+      <div className={cn('flex items-center gap-2.5', className)}>
+        <img src={siteLogo.logo} alt="超觅 Ultraseek" className="h-9 w-auto shrink-0" />
+        {showText && (
+          <div className="flex flex-col leading-none">
+            <span className={cn('text-lg font-extrabold tracking-tight', textColor)}>
+              超觅
+            </span>
+            <span className={cn('text-[10px] font-semibold tracking-[0.2em]', subColor)}>
+              ULTRASEEK
+            </span>
+          </div>
+        )}
+      </div>
+    )
+  }
 
   return (
     <div className={cn('flex items-center gap-2.5', className)}>
