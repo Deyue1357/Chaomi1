@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom'
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight, ShoppingBag, ArrowRight } from 'lucide-react'
 import { Icon } from '@/components/Icon'
 import { Reveal } from '@/components/Reveal'
-import { productCategories } from '@/data/site'
+import { Button } from '@/components/ui/button'
+import { productCategories, defaultBuyLinks } from '@/data/site'
 
 export function ProductCategories() {
   return (
@@ -21,10 +22,7 @@ export function ProductCategories() {
         <div className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {productCategories.map((cat, i) => (
             <Reveal key={cat.id} delay={i * 80}>
-              <Link
-                to="/products"
-                className="group tech-card tech-card-hover block h-full overflow-hidden p-7"
-              >
+              <div className="group tech-card tech-card-hover flex h-full flex-col overflow-hidden p-7">
                 {/* 顶部图标 */}
                 <div className="flex items-start justify-between">
                   <div className={`flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br ${cat.gradient} shadow-tech`}>
@@ -52,7 +50,22 @@ export function ProductCategories() {
                     </span>
                   ))}
                 </div>
-              </Link>
+
+                {/* 操作按钮 */}
+                <div className="mt-auto flex items-center gap-2 pt-6">
+                  <Button asChild size="sm" className="flex-1 tech-gradient border-0 text-white">
+                    <a href={defaultBuyLinks.douyin} target="_blank" rel="noreferrer">
+                      <ShoppingBag className="mr-1 h-3.5 w-3.5" />立即购买
+                    </a>
+                  </Button>
+                  <Button asChild size="sm" variant="outline" className="flex-1">
+                    <Link to="/products">
+                      查看详情
+                      <ArrowRight className="ml-1 h-3.5 w-3.5" />
+                    </Link>
+                  </Button>
+                </div>
+              </div>
             </Reveal>
           ))}
         </div>

@@ -163,6 +163,8 @@ export interface ProductModel {
   name: string
   brand: string
   tag: string
+  douyinUrl?: string // 该型号抖音商品链接（可选，未配置则用默认店铺链接）
+  tmallUrl?: string // 该型号天猫商品链接（可选，未配置则用默认店铺链接）
 }
 
 export interface ProductDetail {
@@ -338,3 +340,16 @@ export const shops: ShopInfo[] = [
     tag: '官方正品',
   },
 ]
+
+// 默认店铺购买链接：型号未配置具体商品链接时，购买按钮跳转到对应店铺主页
+export const defaultBuyLinks = {
+  douyin: 'https://v.douyin.com/4npzyngM789/',
+  tmall: 'https://www.tmall.com/',
+}
+
+// 获取某个型号在指定平台的购买链接（优先用型号专属链接，否则用默认店铺链接）
+export function getBuyUrl(model: ProductModel, platform: 'douyin' | 'tmall'): string {
+  return platform === 'douyin'
+    ? model.douyinUrl ?? defaultBuyLinks.douyin
+    : model.tmallUrl ?? defaultBuyLinks.tmall
+}

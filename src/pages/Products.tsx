@@ -1,16 +1,18 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Check, ArrowRight, Search, ShieldCheck } from 'lucide-react'
+import { Check, ArrowRight, Search, ShieldCheck, Plus, ShoppingBag } from 'lucide-react'
 import { PageHero } from '@/components/layout/PageHero'
 import { Reveal } from '@/components/Reveal'
 import { Icon } from '@/components/Icon'
 import { CTA } from '@/sections/home/CTA'
 import { Button } from '@/components/ui/button'
-import { productCategories, productDetails, brands } from '@/data/site'
+import { productCategories, productDetails, brands, getBuyUrl, defaultBuyLinks } from '@/data/site'
+import { useCart } from '@/context/CartContext'
 import { cn } from '@/lib/utils'
 
 export function Products() {
   const [activeId, setActiveId] = useState(productCategories[0].id)
+  const { addItem, hasItem } = useCart()
 
   const activeCategory = productCategories.find((c) => c.id === activeId)!
   const activeDetail = productDetails.find((d) => d.categoryId === activeId)!
@@ -86,18 +88,41 @@ export function Products() {
               <div className="mt-8">
                 <h3 className="mb-4 text-sm font-semibold tracking-wide text-muted-foreground">热门型号</h3>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  {activeDetail.models.map((m) => (
-                    <div key={m.name} className="group flex items-center justify-between rounded-xl border border-border bg-card p-4 transition-all hover:border-primary/40 hover:shadow-tech">
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-semibold text-foreground">{m.name}</span>
-                          <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">{m.tag}</span>
+                  {activeDetail.models.map((m) => {
+                    const itemKey = `${activeId}-${m.name}`
+                    const added = hasItem(itemKey)
+                    return (
+                      <div key={m.name} className="group flex flex-col rounded-xl border border-border bg-card p-4 transition-all hover:border-primary/40 hover:shadow-tech">
+                        <div>
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="text-sm font-semibold text-foreground">{m.name}</span>
+                            <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">{m.tag}</span>
+                          </div>
+                          <div className="mt-1 text-xs text-muted-foreground">{m.brand}</div>
                         </div>
-                        <div className="mt-1 text-xs text-muted-foreground">{m.brand}</div>
+                        <div className="mt-3 flex items-center gap-2">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="h-8 flex-1"
+                            onClick={() => addItem(activeId, m)}
+                            disabled={added}
+                          >
+                            {added ? (
+                              <><Check className="mr-1 h-3.5 w-3.5" />已加入</>
+                            ) : (
+                              <><Plus className="mr-1 h-3.5 w-3.5" />加入清单</>
+                            )}
+                          </Button>
+                          <Button size="sm" className="h-8 flex-1 tech-gradient border-0 text-white" asChild>
+                            <a href={getBuyUrl(m, 'douyin')} target="_blank" rel="noreferrer">
+                              <ShoppingBag className="mr-1 h-3.5 w-3.5" />立即购买
+                            </a>
+                          </Button>
+                        </div>
                       </div>
-                      <ArrowRight className="h-4 w-4 text-muted-foreground transition-all group-hover:translate-x-1 group-hover:text-primary" />
-                    </div>
-                  ))}
+                    )
+                  })}
                 </div>
               </div>
             </Reveal>
@@ -117,8 +142,14 @@ export function Products() {
                     </div>
                   ))}
                 </div>
-                <div className="border-t border-border p-4">
+                <div className="space-y-2 border-t border-border p-4">
                   <Button asChild className="w-full tech-gradient border-0 text-white">
+                    <a href={defaultBuyLinks.douyin} target="_blank" rel="noreferrer">
+                      <ShoppingBag className="mr-2 h-4 w-4" />
+                      立即购买
+                    </a>
+                  </Button>
+                  <Button asChild variant="outline" className="w-full">
                     <Link to="/contact">
                       咨询此产品
                       <ArrowRight className="ml-2 h-4 w-4" />
