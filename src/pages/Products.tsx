@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Check, ArrowRight, Search, ShieldCheck, Plus, ShoppingBag } from 'lucide-react'
+import { Check, ArrowRight, Search, ShieldCheck, Plus, ShoppingBag, Images } from 'lucide-react'
 import { PageHero } from '@/components/layout/PageHero'
 import { Reveal } from '@/components/Reveal'
 import { Icon } from '@/components/Icon'
+import { ProductGallery } from '@/components/ProductGallery'
 import { CTA } from '@/sections/home/CTA'
 import { Button } from '@/components/ui/button'
-import { productCategories, productDetails, brands, getBuyUrl, defaultBuyLinks, brandLogos } from '@/data/site'
+import { productCategories, productDetails, getBuyUrl, defaultBuyLinks, brandLogos, brandGroups } from '@/data/site'
 import { useCart } from '@/context/CartContext'
 import { cn } from '@/lib/utils'
 
@@ -29,21 +30,31 @@ export function Products() {
       <section className="sticky top-[68px] z-30 border-b border-border bg-background/80 backdrop-blur-xl">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex gap-2 overflow-x-auto py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            {productCategories.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setActiveId(cat.id)}
-                className={cn(
-                  'flex shrink-0 items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all',
-                  activeId === cat.id
-                    ? 'tech-gradient text-white shadow-tech'
-                    : 'bg-secondary text-secondary-foreground hover:bg-secondary/70'
-                )}
-              >
-                <Icon name={cat.icon} className="h-4 w-4" />
-                {cat.name}
-              </button>
-            ))}
+            {productCategories.map((cat) => {
+              const detail = productDetails.find((d) => d.categoryId === cat.id)
+              const count = detail?.models.length ?? 0
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => setActiveId(cat.id)}
+                  className={cn(
+                    'flex shrink-0 items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all',
+                    activeId === cat.id
+                      ? 'tech-gradient text-white shadow-tech'
+                      : 'bg-secondary text-secondary-foreground hover:bg-secondary/70'
+                  )}
+                >
+                  <Icon name={cat.icon} className="h-4 w-4" />
+                  {cat.name}
+                  <span className={cn(
+                    'rounded-full px-1.5 py-0.5 text-[10px] font-semibold leading-none',
+                    activeId === cat.id ? 'bg-white/25 text-white' : 'bg-primary/10 text-primary'
+                  )}>
+                    {count}
+                  </span>
+                </button>
+              )
+            })}
           </div>
         </div>
       </section>
@@ -73,6 +84,17 @@ export function Products() {
                 </div>
               </div>
             </div>
+          </Reveal>
+
+          {/* 产品详情图 */}
+          <Reveal key={`gal-${activeId}`} className="mt-12">
+            <div className="mb-4 flex items-center gap-2">
+              <Images className="h-4 w-4 text-primary" />
+              <h3 className="text-sm font-semibold tracking-wide text-muted-foreground">产品详情图</h3>
+              <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">{activeDetail.gallery?.length ?? 0} 张</span>
+              <span className="text-xs text-muted-foreground/60">· 点击缩略图切换 · 配置实拍图后自动替换占位</span>
+            </div>
+            <ProductGallery gallery={activeDetail.gallery ?? []} icon={activeCategory.icon} gradient={activeCategory.gradient} />
           </Reveal>
 
           <div className="mt-12 grid grid-cols-1 gap-8 lg:grid-cols-3">
@@ -201,22 +223,35 @@ export function Products() {
           </Reveal>
 
           <Reveal delay={300} className="mt-12">
-            <div className="flex flex-wrap justify-center gap-3">
-              {brands.map((brand) => {
-                const logo = brandLogos[brand]
-                return (
-                  <span
-                    key={brand}
-                    className="flex items-center rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 backdrop-blur transition-all hover:border-blue-400/40 hover:bg-blue-500/10"
-                  >
-                    {logo ? (
-                      <img src={logo} alt={brand} loading="lazy" className="h-7 w-auto object-contain" />
-                    ) : (
-                      <span className="text-sm font-medium text-white/70">{brand}</span>
-                    )}
-                  </span>
-                )
-              })}
+            <div className="space-y-10">
+              {brandGroups.map((group) => (
+                <div key={group.label}>
+                  <div className="mb-5 flex items-center justify-center gap-3">
+                    <span className="h-px w-10 bg-white/15" />
+                    <span className="text-sm font-semibold text-white/85">{group.label}</span>
+                    <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] font-medium text-white/50">{group.brands.length} 个品牌</span>
+                    <span className="h-px w-10 bg-white/15" />
+                  </div>
+                  <p className="mb-4 text-center text-xs text-white/40">{group.desc}</p>
+                  <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-7">
+                    {group.brands.map((brand) => {
+                      const logo = brandLogos[brand]
+                      return (
+                        <span
+                          key={brand}
+                          className="flex h-16 items-center justify-center rounded-xl border border-white/10 bg-white/5 px-3 backdrop-blur transition-all hover:border-blue-400/40 hover:bg-blue-500/10"
+                        >
+                          {logo ? (
+                            <img src={logo} alt={brand} loading="lazy" className="h-7 w-auto object-contain" />
+                          ) : (
+                            <span className="text-sm font-medium text-white/70">{brand}</span>
+                          )}
+                        </span>
+                      )
+                    })}
+                  </div>
+                </div>
+              ))}
             </div>
           </Reveal>
         </div>

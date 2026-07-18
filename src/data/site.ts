@@ -76,6 +76,25 @@ export const brands: string[] = [
   '联想', '360', '京东京造', '华为智选',
 ]
 
+// 品牌分组（品牌较多时分组展示更清晰）
+export interface BrandGroup {
+  label: string
+  desc: string
+  brands: string[]
+}
+export const brandGroups: BrandGroup[] = [
+  {
+    label: '国产主流',
+    desc: '深度适配国货头部品牌，型号全覆盖',
+    brands: ['追觅', '科沃斯', '石头', '云鲸', '小米', '美的', '海尔', '由利', '哇力', '联想', '360', '京东京造', '华为智选'],
+  },
+  {
+    label: '海外品牌',
+    desc: '兼容国际品牌，全球品质一视同仁',
+    brands: ['iRobot', '戴森', '浦桑尼克', '飞利浦', '松下'],
+  },
+]
+
 // 核心优势
 export const advantages = [
   {
@@ -172,11 +191,18 @@ export interface ProductModel {
   tmallUrl?: string // 该型号天猫商品链接（可选，未配置则用默认店铺链接）
 }
 
+export interface ProductGalleryImage {
+  image?: string // 产品详情图，可选。配置后展示实拍图，未配置则显示渐变占位+图标
+  title: string
+  desc: string
+}
+
 export interface ProductDetail {
   categoryId: string
   specs: ProductSpec[]
   models: ProductModel[]
   highlights: { title: string; desc: string }[]
+  gallery?: ProductGalleryImage[] // 产品详情图集，可选。配置后产品页展示大图+缩略图+图文说明
 }
 
 export const productDetails: ProductDetail[] = [
@@ -201,6 +227,11 @@ export const productDetails: ProductDetail[] = [
       { title: '锁尘不漏粉', desc: '热熔工艺封口，更换时粉尘零外溢。' },
       { title: '大容量设计', desc: '单袋可使用 4-6 周，减少更换频次。' },
     ],
+    gallery: [
+      { title: 'HEPA H13 过滤层', desc: '多层复合结构，拦截 0.3μm 颗粒，过滤效率 ≥ 99.97%，守护呼吸健康。' },
+      { title: '热熔锁尘封口', desc: '热熔工艺封口，更换时粉尘零外溢，杜绝二次污染。' },
+      { title: '大容量设计', desc: '1.2L / 2.5L / 3.0L 三种规格，单袋可用 4-6 周，减少更换频次。' },
+    ],
   },
   {
     categoryId: 'side-brush',
@@ -222,6 +253,11 @@ export const productDetails: ProductDetail[] = [
       { title: '高耐磨纤维', desc: '尼龙材质，长期使用不变形不卷曲。' },
       { title: '深入墙角', desc: 'V 型角度设计，墙角缝隙灰尘一扫净。' },
       { title: '静音运行', desc: '优化刷毛排列，降噪 30%，不打扰家人。' },
+    ],
+    gallery: [
+      { title: '高耐磨尼龙纤维', desc: '尼龙刷毛，长期使用不变形不卷曲，寿命 ≥ 6 个月。' },
+      { title: 'V 型角度设计', desc: '深入墙角缝隙，聚拢灰尘一扫净，覆盖率提升 35%。' },
+      { title: '静音优化', desc: '刷毛排列优化，降噪 30%，运行噪音 < 45dB。' },
     ],
   },
   {
@@ -245,6 +281,11 @@ export const productDetails: ProductDetail[] = [
       { title: '微米拦截', desc: '拦截 99.97% 微尘与过敏原，守护呼吸。' },
       { title: '水洗复用', desc: '支持水洗循环使用，环保又省钱。' },
     ],
+    gallery: [
+      { title: '三级递进过滤', desc: '初效 + HEPA + 活性炭，层层拦截微米级颗粒。' },
+      { title: '水洗复用', desc: '支持水洗 ≤ 30 次，环保省钱，寿命 6-12 个月。' },
+      { title: '定制尺寸', desc: '适配 2000+ 机型，按机型精准开模，严丝合缝。' },
+    ],
   },
   {
     categoryId: 'roller-brush',
@@ -266,6 +307,11 @@ export const productDetails: ProductDetail[] = [
       { title: '防缠绕设计', desc: '软胶刮条 + 离心结构，毛发不缠绕。' },
       { title: 'V 型导流', desc: '聚拢灰尘至中央吸口，吸净率提升 40%。' },
       { title: '深入地毯', desc: '高转速拍打，深层清洁地毯纤维。' },
+    ],
+    gallery: [
+      { title: '防缠绕软胶', desc: '软胶刮条 + 离心结构，毛发不缠绕，易清理。' },
+      { title: 'V 型导流', desc: '聚拢至中央吸口，吸净率提升 40%。' },
+      { title: '地毯深层清洁', desc: '高转速拍打，深层清洁地毯纤维。' },
     ],
   },
   {
@@ -289,6 +335,11 @@ export const productDetails: ProductDetail[] = [
       { title: '不留水痕', desc: '优化含水率，擦过即干，不留痕迹。' },
       { title: '可机洗复用', desc: '支持机洗 50 次以上，持久耐用。' },
     ],
+    gallery: [
+      { title: '超细纤维', desc: '高密度纤维，强效吸附污渍与水渍，去污力强。' },
+      { title: '不留水痕', desc: '优化含水率，擦过即干，不留痕迹。' },
+      { title: '机洗耐用', desc: '支持机洗 50 次以上，持久耐用，性价比高。' },
+    ],
   },
   {
     categoryId: 'accessories',
@@ -309,6 +360,11 @@ export const productDetails: ProductDetail[] = [
     highlights: [
       { title: '全系列覆盖', desc: '水箱、充电座、清洁工具一站配齐。' },
       { title: '原厂级品质', desc: '精密开模，与原机严丝合缝。' },
+      { title: '即插即用', desc: '无需调试，安装即用，省心省力。' },
+    ],
+    gallery: [
+      { title: '全系列覆盖', desc: '水箱、充电座、防撞条、清洁工具一站配齐。' },
+      { title: '原厂级品质', desc: '精密开模，与原机严丝合缝，ABS + 硅胶材质。' },
       { title: '即插即用', desc: '无需调试，安装即用，省心省力。' },
     ],
   },
